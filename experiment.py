@@ -45,7 +45,7 @@ def experiment(X,y,num_trials):
     quant_loss = []
     for i in range(num_trials):
         w0 = np.random.uniform(-1, 1, (X_test.shape[0], 1))
-        w,iters = grdescentnormal(normallogistic, w0, 0.1, 20000, X_train, y_train)
+        w,iters = grdescentnormal(normallogistic, w0, 0.1, 50000, X_train, y_train)
         loss = test_loss(w,X_test,y_test)
 
         # store the results
