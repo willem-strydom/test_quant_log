@@ -19,6 +19,7 @@ def grdescentquant(func,w0,stepsize,maxiter,xTr,yTr,tolerance=1e-03):
     w = w0
     gradient = 0
     prior_gradient = np.zeros(w.shape)
+    prior_w = np.zeros(w.shape)
 #why init to 0? should be large number or else bad no?
     prior_loss = 1e06
         # Increase the stepsize by a factor of 1.01 each iteration where the loss goes down,
@@ -48,11 +49,11 @@ def grdescentquant(func,w0,stepsize,maxiter,xTr,yTr,tolerance=1e-03):
         if np.linalg.norm(gradient)<tolerance:
             print('gradient too small')
             break
-        if np.array_equal(gradient,prior_gradient):
-            print("gradient is unchanged")
+        if np.array_equal(w,prior_w):
+            print("w is unchanged")
             break
         prior_loss = loss
         prior_gradient = gradient
         num_iter += 1
-
+        prior_w = w
     return w, num_iter
