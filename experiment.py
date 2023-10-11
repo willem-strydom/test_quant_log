@@ -23,20 +23,21 @@ def experiment(X,y,num_trials):
     # performs gradient descent on a dataset
     # for both the normal and quantized versions
     # inputs: X , y :self-explanatory
-    # inputs: num_trials :the number of time to perform gradients descent with a new random w0
+    # inputs: num_trials :the number of times to perform gradient descent with a new random w0
     # outputs: num_iters_normal :number of iterations until stop criteria met for normal gradient descent
     # outputs: num_iters_quant :--//-- for quantized gradient descent
-    # outputs: test_loss_normal :the 1-0 accuracy of the w_normal on the test set
+    # outputs: test_loss_normal :the 1-0 accuracy of the w_normal on the test set (E_out)
     # outputs: test_loss_quant :--//-- for w_quant
+
+
     # split randomly into test and training sets
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 
-    # have to transpose data to get it to work with the funciton implementation where features are along the rows
+    # have to transpose data to get it to work with the function implementation where features are along the rows
     X_train = X_train.T
     X_test = X_test.T
     y_test = y_test.T
     y_train = y_train.T
-
 
     normal_iters = []
     quant_iters = []

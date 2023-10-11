@@ -18,15 +18,14 @@ def grdescentquant(func,w0,stepsize,maxiter,xTr,yTr,tolerance=1e-03):
     num_iter = 0
     w = w0
     gradient = 0
-    prior_gradient = 0
+    prior_gradient = np.zeros(w.shape)
 #why init to 0? should be large number or else bad no?
-    prior_loss = 100000
+    prior_loss = 1e06
         # Increase the stepsize by a factor of 1.01 each iteration where the loss goes down,
         # and decrease it by a factor 0.5 if the loss went up. ...
         # also undo the last update in that case to make sure
         # the loss decreases every iteration
     while num_iter <maxiter:
-
         loss, gradient = func(w,xTr,yTr)
         # undo previous update if the loss got worse
         if loss > prior_loss:
@@ -55,4 +54,5 @@ def grdescentquant(func,w0,stepsize,maxiter,xTr,yTr,tolerance=1e-03):
         prior_loss = loss
         prior_gradient = gradient
         num_iter += 1
+
     return w, num_iter

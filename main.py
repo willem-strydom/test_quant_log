@@ -37,4 +37,3 @@ normal_iters, quant_iters, normal_loss, quant_loss = experiment(sonar_x, sonar_y
 print(f"normal iterations: {np.mean(normal_iters)}, quantized iterations: {np.mean(quant_iters)}, "
       f"normal loss {np.mean(normal_loss)}, quantized loss {np.mean(quant_loss)}")
 
-print(sonar_x.shape)
