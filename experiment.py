@@ -43,7 +43,7 @@ def experiment(X,y,num_trials):
     quant_iters = []
     normal_loss = []
     quant_loss = []
-    for i in range(num_trials):
+    for i in range(1):
         w0 = np.random.uniform(-1, 1, (X_test.shape[0], 1))
         w,iters = grdescentnormal(normallogistic, w0, 0.1, 50000, X_train, y_train)
         loss = test_loss(w,X_test,y_test)
@@ -54,7 +54,7 @@ def experiment(X,y,num_trials):
 
         #do the same for quantized version
         w_quant = np.sign(w0)
-        w_quant, iters = grdescentquant(quantlogistic, w_quant, 0.1, 10000, X_train, y_train)
+        w_quant, iters = grdescentquant(quantlogistic, w_quant, 2, 10000, X_train, y_train)
         loss = test_loss(w_quant,X_test,y_test)
 
         quant_iters.append(iters)

@@ -27,9 +27,11 @@ def grdescentquant(func,w0,stepsize,maxiter,xTr,yTr,tolerance=1e-03):
         # also undo the last update in that case to make sure
         # the loss decreases every iteration
     while num_iter <maxiter:
+        print(w)
         loss, gradient = func(w,xTr,yTr)
+        print(gradient)
         # undo previous update if the loss got worse
-        if loss > prior_loss:
+        """if loss > prior_loss:
             # undo the previous update
             w = np.sign(w + stepsize * prior_gradient)
             # decrease step-size
@@ -43,7 +45,10 @@ def grdescentquant(func,w0,stepsize,maxiter,xTr,yTr,tolerance=1e-03):
                 w = np.sign(w - stepsize * gradient)
             else:
                 stepsize = stepsize * 1.01
-                w = np.sign(w - stepsize * gradient)
+                w = np.sign(w - stepsize * gradient)"""
+        w = np.sign(w - stepsize * gradient)
+        print(w)
+
         if stepsize < eps:
             break
         if np.linalg.norm(gradient)<tolerance:
@@ -55,5 +60,8 @@ def grdescentquant(func,w0,stepsize,maxiter,xTr,yTr,tolerance=1e-03):
         prior_loss = loss
         prior_gradient = gradient
         num_iter += 1
+        print(num_iter)
         prior_w = w
+    print(w, prior_w)
+
     return w, num_iter
