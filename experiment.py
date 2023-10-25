@@ -19,11 +19,13 @@ def test_loss(w,X,y):
 
     return test_loss
 
-def experiment(X,y,num_trials):
+def experiment(X,y,num_trials, p):
     # performs gradient descent on a dataset
     # for both the normal and quantized versions
     # inputs: X , y :self-explanatory
     # inputs: num_trials :the number of times to perform gradient descent with a new random w0
+    # imputs: p: the number of bits that will be considered for flipping, where we flip the sign of w where w-gradient is largest iff the sign is different
+    # inputs: p: note, this is the number considered, where the number flipped depends on the gradient and is <=10
     # outputs: num_iters_normal :number of iterations until stop criteria met for normal gradient descent
     # outputs: num_iters_quant :--//-- for quantized gradient descent
     # outputs: test_loss_normal :the 1-0 accuracy of the w_normal on the test set (E_out)
@@ -43,9 +45,9 @@ def experiment(X,y,num_trials):
     quant_iters = []
     normal_loss = []
     quant_loss = []
-    for i in range(1):
+    for i in range(num_trials):
         w0 = np.random.uniform(-1, 1, (X_test.shape[0], 1))
-        w,iters = grdescentnormal(normallogistic, w0, 0.1, 50000, X_train, y_train)
+        w,iters = grdescentnormal(normallogistic, w0, 0.1, 5000, X_train, y_train)
         loss = test_loss(w,X_test,y_test)
 
         # store the results
@@ -54,7 +56,7 @@ def experiment(X,y,num_trials):
 
         #do the same for quantized version
         w_quant = np.sign(w0)
-        w_quant, iters = grdescentquant(quantlogistic, w_quant, 2, 10000, X_train, y_train)
+        w_quant, iters = grdescentquant(quantlogistic, w_quant, 10000, X_train, y_train, p)
         loss = test_loss(w_quant,X_test,y_test)
 
         quant_iters.append(iters)

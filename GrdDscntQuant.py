@@ -1,67 +1,44 @@
 import numpy as np
 
+def grdescentquant(func, w0, maxiter, xTr, yTr, p):
+    # INPUT:
+    # func function to minimize
+    # w0 = initial weight vector
+    # p = nummber of bits to flip
+    #
+    # OUTPUTS:
+    #
+    # w = final weight vector
+    eps = 2.2204e-14  # minimum step size for gradient descent
 
-
-def grdescentquant(func,w0,stepsize,maxiter,xTr,yTr,tolerance=1e-03):
-# INPUT:
-# func function to minimize
-# w_trained = initial weight vector
-# stepsize = initial gradient descent stepsize
-# tolerance = if norm(gradient)<tolerance, it quits
-#
-# OUTPUTS:
-#
-# w = final weight vector
-    eps = 2.2204e-14 #minimum step size for gradient descent
-
-    # YOUR CODE HERE
     num_iter = 0
     w = w0
+
     gradient = 0
+
     prior_gradient = np.zeros(w.shape)
     prior_w = np.zeros(w.shape)
-#why init to 0? should be large number or else bad no?
+
     prior_loss = 1e06
-        # Increase the stepsize by a factor of 1.01 each iteration where the loss goes down,
-        # and decrease it by a factor 0.5 if the loss went up. ...
-        # also undo the last update in that case to make sure
-        # the loss decreases every iteration
-    while num_iter <maxiter:
-        print(w)
-        loss, gradient = func(w,xTr,yTr)
-        print(gradient)
-        # undo previous update if the loss got worse
-        """if loss > prior_loss:
-            # undo the previous update
-            w = np.sign(w + stepsize * prior_gradient)
-            # decrease step-size
-            stepsize = (stepsize / 1.01) * 0.5
-            # take a smaller step
-            w = np.sign(w - stepsize * prior_gradient)
-        # to speed up convergence for the first few steps
-        else:
-            if num_iter < 10:
-                stepsize = stepsize * 1.1
-                w = np.sign(w - stepsize * gradient)
-            else:
-                stepsize = stepsize * 1.01
-                w = np.sign(w - stepsize * gradient)"""
-        w = np.sign(w - stepsize * gradient)
-        print(w)
 
-        if stepsize < eps:
-            break
-        if np.linalg.norm(gradient)<tolerance:
-            print('gradient too small')
-            break
-        if np.array_equal(w,prior_w):
-            print("w is unchanged")
-            break
-        prior_loss = loss
-        prior_gradient = gradient
+    while num_iter < maxiter:
+        loss, gradient = func(w, xTr, yTr)
+        w1 = np.abs((w - gradient))
+        # print(w1)
+        w_grad_diff = np.argsort(w1, axis=0)
+    # print(w_grad_diff)
+        flipped = 0
+        i =0
+        while i < len(gradient) and flipped < p:
+            index = w_grad_diff[i]
+
+            if np.sign(gradient[index]) == w[index]:
+    # print(num_iter)
+                flipped += 1
+                w[index] = -w[index]
+            i +=1
         num_iter += 1
-        print(num_iter)
         prior_w = w
-    print(w, prior_w)
-
+        if flipped == 0:
+            break
     return w, num_iter
