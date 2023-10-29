@@ -25,14 +25,13 @@ def grdescentquant(func, w0, maxiter, xTr, yTr, p):
         loss, gradient = func(w, xTr, yTr)
         w1 = np.abs((w - gradient))
 
-        probs = w1 /np.sum(w1)
+        #probs = w1 /np.sum(w1)
 
-        #w_grad_diff = np.argsort(w1, axis=0)
-    # print(w_grad_diff)
+        w_grad_diff = np.argsort(w1, axis=0)
         flipped = 0
-        indices = np.array(range(len(gradient)))
-        for i in range(p):
-            index = np.random.choice(indices, p=np.ravel(probs))
+        #indices = np.array(range(len(gradient)))
+        for i in range(w):
+            index = w_grad_diff[i]
 
             if np.sign(gradient[index]) == w[index]:
     # print(num_iter)
