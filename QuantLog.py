@@ -33,5 +33,5 @@ def quantlogistic(w,xTr,yTr):
     bins = [-0.5,0.5]
     alpha = np.digitize(yTr * y_pred, bins)
     alpha = alpha/(len(bins))
-    gradient = -np.sum(yTr * xTr * alpha, axis = 1).reshape(-1, 1)
+    gradient = np.sum(yTr * xTr * alpha, axis = 1).reshape(-1, 1)
     return loss,gradient

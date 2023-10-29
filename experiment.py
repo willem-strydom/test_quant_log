@@ -32,34 +32,38 @@ def experiment(X,y,num_trials, p):
     # outputs: test_loss_quant :--//-- for w_quant
 
 
-    # split randomly into test and training sets
+    """# split randomly into test and training sets
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 
     # have to transpose data to get it to work with the function implementation where features are along the rows
     X_train = X_train.T
     X_test = X_test.T
     y_test = y_test.T
-    y_train = y_train.T
+    y_train = y_train.T"""
+
 
     normal_iters = []
     quant_iters = []
     normal_loss = []
     quant_loss = []
+    w_quants = []
+    X = X.T
+    y = y.T
     for i in range(num_trials):
-        w0 = np.random.uniform(-1, 1, (X_test.shape[0], 1))
-        w,iters = grdescentnormal(normallogistic, w0, 0.1, 5000, X_train, y_train)
-        loss = test_loss(w,X_test,y_test)
+        w0 = np.random.uniform(-1, 1, (X.shape[0], 1))
+        w,iters = grdescentnormal(normallogistic, w0, 0.1, 500000, X, y)
+        #loss = test_loss(w,X_test,y_test)
 
         # store the results
         normal_iters.append(iters)
-        normal_loss.append(loss)
+        #normal_loss.append(loss)
 
         #do the same for quantized version
         w_quant = np.sign(w0)
-        w_quant, iters = grdescentquant(quantlogistic, w_quant, 10000, X_train, y_train, p)
-        loss = test_loss(w_quant,X_test,y_test)
+        w_quant, iters = grdescentquant(quantlogistic, w_quant, 10000, X, y, p)
+        #loss = test_loss(w_quant,X_test,y_test)
 
         quant_iters.append(iters)
-        quant_loss.append(loss)
 
-    return normal_iters, quant_iters, normal_loss, quant_loss
+
+    return normal_iters, quant_iters,  w_quant, w

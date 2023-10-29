@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 from experiment import experiment
+from experiment import test_loss
 import random
 
 #loading and sorting the data
@@ -26,14 +27,17 @@ sonar_y = sonar_data[:,-1]
 sonar_y = np.where(sonar_y == "M",1,-1)
 
 # p = int(sonar_x.shape[0] // (random.uniform(10,30)))
-p = int(random.uniform(10,30))
-print(p)
+p = 10
 
-normal_iters, quant_iters, normal_loss, quant_loss = experiment(sonar_x, sonar_y,10,p)
+normal_iters, quant_iters, w_quant, w = experiment(sonar_x, sonar_y,1,p)
 
-print(f"sonar normal iterations: {np.mean(normal_iters)}, quantized iterations: {np.mean(quant_iters)}, "
-      f"normal loss {np.mean(normal_loss)}, quantized loss {np.mean(quant_loss)}, quantized iters {quant_iters}")
-
+"""print(f"sonar normal iterations: {np.mean(normal_iters)}, quantized iterations: {np.mean(quant_iters)}, "
+      f"normal loss {np.mean(normal_loss)}, quantized loss {np.mean(quant_loss)}, quantized iters {quant_iters}")"""
+got_same_w = (np.sign(w) == w_quant)
+print(got_same_w)
+print(w)
+print(w_quant)
+print(test_loss(np.sign(w), sonar_x.T,sonar_y.T))
 """
 normal_iters, quant_iters, normal_loss, quant_loss = experiment(diabetes_x,diabetes_y,10,p)
 ​
