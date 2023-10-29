@@ -11,7 +11,7 @@ diabetes_x = diabetes_data[:,:-1]
 diabetes_y = diabetes_data[:,-1]
 diabetes_y = np.where(diabetes_y == 0,-1, diabetes_y)
 # avoid overflow error
-scaler = MinMaxScaler(feature_range=(0, 1))
+scaler = MinMaxScaler(feature_range=(-1, 1))
 diabetes_x = scaler.fit_transform(diabetes_x)
 bias = np.ones((diabetes_x.shape[0],1))
 diabetes_x = np.hstack((bias,diabetes_x))
