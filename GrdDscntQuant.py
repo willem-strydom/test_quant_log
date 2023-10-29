@@ -30,7 +30,7 @@ def grdescentquant(func, w0, maxiter, xTr, yTr, p):
         w_grad_diff = np.argsort(w1, axis=0)
         flipped = 0
         #indices = np.array(range(len(gradient)))
-        for i in range(w):
+        for i in range(len(w)):
             index = w_grad_diff[i]
 
             if np.sign(gradient[index]) == w[index]:
