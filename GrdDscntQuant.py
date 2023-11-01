@@ -34,11 +34,11 @@ def grdescentquant(func, w0, maxiter, xTr, yTr, p):
 
         if np.all(w_prev2 == w):
             print('in loop')
-            break
+            return w, w_prev, w_prev2, num_iter
 
         if flipped == 0:
             print('no flips')
-            break
+            return w, w_prev, w_prev2, num_iter
 
         w_prev2 = w_prev
         w_prev = w
