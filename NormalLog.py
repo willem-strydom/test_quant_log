@@ -20,7 +20,7 @@ def normallogistic(w,xTr,yTr):
     y_pred = w.T@xTr
     loss = np.sum(np.log(1 + np.exp(-yTr * y_pred)))
     num = yTr*xTr
-    den = (1 + np.exp(yTr * (y_pred)))
+    den = (1 + np.exp(yTr * y_pred))
     gradient = -np.mean((num / den), axis=1).reshape(-1, 1)
 
     return loss,gradient

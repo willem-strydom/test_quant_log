@@ -25,13 +25,13 @@ def test_loss(w,X,y):
     return test_loss
 def quantlogistic(w,xTr,yTr):
 
-    y_pred = w.T@xTr
+    y_pred = w.T @ xTr
     #keeping same loss function as for normal log loss?
-    loss = np.sum(np.log(1 + np.exp(-yTr * (y_pred)))) / xTr.shape[1]
+    loss = np.mean(np.log(1 + np.exp(-yTr * y_pred)))
 
     # implement more binnings
-    bins = [-0.5,0.5]
-    alpha = np.digitize(yTr * y_pred, bins)
+    bins = [-0.5, 0.5]
+    alpha = np.digitize(-yTr * y_pred, bins)
     alpha = alpha/(len(bins))
     gradient = np.mean(yTr * xTr * alpha, axis = 1).reshape(-1, 1)
-    return loss,gradient
+    return loss, gradient

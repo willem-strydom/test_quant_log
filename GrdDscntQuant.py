@@ -14,12 +14,12 @@ def grdescentquant(func, w0, maxiter, xTr, yTr, p):
     num_iter = 0
     w = w0
 
-
     while num_iter < maxiter:
         loss, gradient = func(w, xTr, yTr)
 
         flipped = 0
         expected_flips = np.sum(np.sign(gradient) == w)
+
         for index in range(len(w)):
 
             if np.sign(gradient[index]) == w[index]:
