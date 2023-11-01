@@ -39,6 +39,7 @@ def grdescentquant(func, w0, maxiter, xTr, yTr, p):
         if flipped == 0:
             print('no flips')
             break
-        w_prev = w
+
         w_prev2 = w_prev
+        w_prev = w
     return w, w_prev, w_prev2, num_iter
