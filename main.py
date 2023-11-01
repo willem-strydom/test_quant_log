@@ -19,6 +19,7 @@ diabetes_x = np.hstack((bias,diabetes_x))
 #loading sonar data
 sonar_data = pd.read_csv("sonar.csv").to_numpy()
 sonar_x = sonar_data[:,:-1]
+sonar_x = scaler.fit_transform(sonar_x)
 #add intercept
 bias = np.ones((sonar_data.shape[0],1))
 sonar_x = np.hstack((bias, sonar_x)).astype(float)
@@ -34,10 +35,12 @@ normal_iters, quant_iters,  w_quant, w_quant_prev, w_quant_prev2, w = experiment
 """print(f"sonar normal iterations: {np.mean(normal_iters)}, quantized iterations: {np.mean(quant_iters)}, "
       f"normal loss {np.mean(normal_loss)}, quantized loss {np.mean(quant_loss)}, quantized iters {quant_iters}")"""
 got_same_w = (np.sign(w) == w_quant)
-print(got_same_w)
-print(w)
-print(w_quant)
-print(test_loss(np.sign(w), sonar_x.T,sonar_y.T))
+#print(got_same_w)
+#print(w)
+print(np.hstack((w_quant,w_quant_prev2)))
+#print(test_loss(np.sign(w), sonar_x.T,sonar_y.T))
+print(quant_iters)
+
 """
 normal_iters, quant_iters, normal_loss, quant_loss = experiment(diabetes_x,diabetes_y,10,p)
 
