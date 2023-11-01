@@ -13,7 +13,7 @@ def grdescentquant(func, w0, maxiter, xTr, yTr, p):
 
     num_iter = 0
     w = w0
-    w_prev = None
+    w_prev = w0
     w_prev2 = None
     while num_iter < maxiter:
         loss, gradient = func(w, xTr, yTr)
