@@ -29,8 +29,8 @@ def grdescentquant(func, w0, maxiter, xTr, yTr, p):
 
         num_iter += 1
 
+        #redundant check
         assert expected_flips == flipped
-
 
         if np.all(w_prev2 == w):
             print('in loop')
@@ -40,6 +40,6 @@ def grdescentquant(func, w0, maxiter, xTr, yTr, p):
             print('no flips')
             return w, w_prev, w_prev2, num_iter
 
-        w_prev2 = w_prev
-        w_prev = w
+        w_prev2 = w_prev.copy()
+        w_prev = w.copy()
     return w, w_prev, w_prev2, num_iter
