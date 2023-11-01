@@ -13,7 +13,8 @@ def grdescentquant(func, w0, maxiter, xTr, yTr, p):
 
     num_iter = 0
     w = w0
-
+    w_prev = None
+    w_prev2 = None
     while num_iter < maxiter:
         loss, gradient = func(w, xTr, yTr)
 
@@ -29,6 +30,14 @@ def grdescentquant(func, w0, maxiter, xTr, yTr, p):
         num_iter += 1
 
         assert expected_flips == flipped
+
+        if np.all(w_prev == w):
+            break
+        if np.all(w_prev2 == w):
+            break
+        #redundant now
         if flipped == 0:
             break
-    return w, num_iter
+        w_prev = w
+        w_prev2 = w_prev
+    return w, w_prev, w_prev2, num_iter

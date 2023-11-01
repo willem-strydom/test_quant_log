@@ -60,10 +60,10 @@ def experiment(X,y,num_trials, p):
 
         #do the same for quantized version
         w_quant = np.sign(w0)
-        w_quant, iters = grdescentquant(quantlogistic, w_quant, 10000, X, y, p)
+        w_quant, w_quant_prev, w_quant_prev2, iters = grdescentquant(quantlogistic, w_quant, 10000, X, y, p)
         #loss = test_loss(w_quant,X_test,y_test)
 
         quant_iters.append(iters)
 
 
-    return normal_iters, quant_iters,  w_quant, w
+    return normal_iters, quant_iters,  w_quant, w_quant_prev, w_quant_prev2, w

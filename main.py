@@ -29,7 +29,7 @@ sonar_y = np.where(sonar_y == "M",1,-1)
 # p = int(sonar_x.shape[0] // (random.uniform(10,30)))
 p = 10
 
-normal_iters, quant_iters, w_quant, w = experiment(sonar_x, sonar_y,1,p)
+normal_iters, quant_iters,  w_quant, w_quant_prev, w_quant_prev2, w = experiment(sonar_x, sonar_y,1,p)
 
 """print(f"sonar normal iterations: {np.mean(normal_iters)}, quantized iterations: {np.mean(quant_iters)}, "
       f"normal loss {np.mean(normal_loss)}, quantized loss {np.mean(quant_loss)}, quantized iters {quant_iters}")"""
@@ -40,7 +40,7 @@ print(w_quant)
 print(test_loss(np.sign(w), sonar_x.T,sonar_y.T))
 """
 normal_iters, quant_iters, normal_loss, quant_loss = experiment(diabetes_x,diabetes_y,10,p)
-​
+
 print(f"diabetes normal iterations: {np.mean(normal_iters)}, quantized iterations: {np.mean(quant_iters)}, "
       f"normal loss {np.mean(normal_loss)}, quantized loss {np.mean(quant_loss)}")
 """
