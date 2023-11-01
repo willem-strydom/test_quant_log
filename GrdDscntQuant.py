@@ -13,8 +13,8 @@ def grdescentquant(func, w0, maxiter, xTr, yTr, p):
 
     num_iter = 0
     w = w0
-    w_prev = None
-    w_prev2 = None
+    w_prev = np.zeros(w.shape)
+    w_prev2 = np.zeros(w.shape)
     while num_iter < maxiter:
         loss, gradient = func(w, xTr, yTr)
 
