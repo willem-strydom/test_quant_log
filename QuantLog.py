@@ -1,5 +1,7 @@
 import numpy as np
 
+from binning import binning
+
 '''
 
     INPUT:
@@ -23,14 +25,14 @@ def test_loss(w,X,y):
     test_loss = np.sum(preds != y) / len(y)
 
     return test_loss
-def quantlogistic(w,xTr,yTr):
+def quantlogistic(w,xTr,yTr,num_bins):
 
     y_pred = w.T @ xTr
     #keeping same loss function as for normal log loss?
     loss = np.mean(np.log(1 + np.exp(-yTr * y_pred)))
 
     # implement more binnings
-    bins = [-0.5, 0.5]
+    bins = binning(-yTr*y_pred, num_bins)
     alpha = np.digitize(-yTr * y_pred, bins)
     alpha = alpha/(len(bins))
     gradient = -np.mean(yTr * xTr * alpha, axis = 1).reshape(-1, 1)
