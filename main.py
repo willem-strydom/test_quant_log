@@ -4,18 +4,19 @@ from sklearn.preprocessing import MinMaxScaler
 from experiment import experiment
 from experiment import test_loss
 import random
-
+scaler = MinMaxScaler(feature_range=(-1, 1))
+"""
 #loading and sorting the data
 diabetes_data = pd.read_csv("diabetes.csv").to_numpy()
 diabetes_x = diabetes_data[:,:-1]
 diabetes_y = diabetes_data[:,-1]
 diabetes_y = np.where(diabetes_y == 0,-1, diabetes_y)
 # avoid overflow error
-scaler = MinMaxScaler(feature_range=(-1, 1))
+
 diabetes_x = scaler.fit_transform(diabetes_x)
 bias = np.ones((diabetes_x.shape[0],1))
 diabetes_x = np.hstack((bias,diabetes_x))
-
+"""
 #loading sonar data
 sonar_data = pd.read_csv("sonar.csv").to_numpy()
 sonar_x = sonar_data[:,:-1]
@@ -27,23 +28,6 @@ sonar_y = sonar_data[:,-1]
 #convert labels to +1 -1
 sonar_y = np.where(sonar_y == "M",1,-1)
 
-# p = int(sonar_x.shape[0] // (random.uniform(10,30)))
-p = 10
+bins = [1,2,3,4]
 
-normal_iters, quant_iters,  w_quant, w_quant_prev, w_quant_prev2, w = experiment(sonar_x, sonar_y,1,p)
-
-"""print(f"sonar normal iterations: {np.mean(normal_iters)}, quantized iterations: {np.mean(quant_iters)}, "
-      f"normal loss {np.mean(normal_loss)}, quantized loss {np.mean(quant_loss)}, quantized iters {quant_iters}")"""
-got_same_w = (np.sign(w) == w_quant)
-#print(got_same_w)
-#print(w)
-print(np.hstack((w_quant,w_quant_prev2)))
-#print(test_loss(np.sign(w), sonar_x.T,sonar_y.T))
-print(quant_iters)
-
-"""
-normal_iters, quant_iters, normal_loss, quant_loss = experiment(diabetes_x,diabetes_y,10,p)
-
-print(f"diabetes normal iterations: {np.mean(normal_iters)}, quantized iterations: {np.mean(quant_iters)}, "
-      f"normal loss {np.mean(normal_loss)}, quantized loss {np.mean(quant_loss)}")
-"""
+normal_iters, quant_iters,  w_quant, w = experiment(sonar_x,sonar_y, bins)

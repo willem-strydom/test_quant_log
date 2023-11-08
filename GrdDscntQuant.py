@@ -1,45 +1,49 @@
 import numpy as np
 
-def grdescentquant(func, w0, maxiter, xTr, yTr, p):
+def grdescentquant(func, w0, stepsize, maxiter, xTr, yTr, bins, tolerance=1e-02):
     # INPUT:
     # func function to minimize
-    # w0 = initial weight vector
-    # p = nummber of bits to flip
+    # w_trained = initial weight vector
+    # stepsize = initial gradient descent stepsize
+    # tolerance = if norm(gradient)<tolerance, it quits
     #
     # OUTPUTS:
     #
     # w = final weight vector
-    # num_iter = number of times the gradient was calculated
+    eps = 2.2204e-14  # minimum step size for gradient descent
 
+    # YOUR CODE HERE
     num_iter = 0
     w = w0
-    w_prev = np.zeros(w.shape)
-    w_prev2 = np.zeros(w.shape)
+    gradient = 0
+    prior_gradient = np.zeros(w.shape)
+    # why init to 0? should be large number or else bad no?
+    prior_loss = 1e06
+    # Increase the stepsize by a factor of 1.01 each iteration where the loss goes down,
+    # and decrease it by a factor 0.5 if the loss went up. ...
+    # also undo the last update in that case to make sure
+    # the loss decreases every iteration
     while num_iter < maxiter:
-        loss, gradient = func(w, xTr, yTr)
+        loss, gradient = func(w, xTr, yTr, bins)
+        if loss > prior_loss:
 
-        flipped = 0
-        expected_flips = np.sum(np.sign(gradient) == w)
+            w = w + stepsize * prior_gradient
+            stepsize = (stepsize / 1.01) * 0.5
+            w = w - stepsize * prior_gradient
+        else:
+            if num_iter < 10:
+                stepsize = stepsize * 1.1
+                w = w - stepsize * gradient
+            else:
+                stepsize = stepsize * 1.01
+                w = w - stepsize * gradient
+        if stepsize < eps:
+            break
+        if np.linalg.norm(gradient) < tolerance:
+            break
 
-        for index in range(len(w)):
-
-            if np.sign(gradient[index]) == w[index]:
-                flipped += 1
-                w[index] = -w[index]
-
+        prior_loss = loss
+        prior_gradient = gradient
         num_iter += 1
 
-        #redundant check
-        assert expected_flips == flipped
-
-        if np.all(w_prev2 == w):
-            print('in loop')
-            return w, w_prev, w_prev2, num_iter
-
-        if flipped == 0:
-            print('no flips')
-            return w, w_prev, w_prev2, num_iter
-
-        w_prev2 = w_prev.copy()
-        w_prev = w.copy()
-    return w, w_prev, w_prev2, num_iter
+    return w, num_iter
