@@ -5,7 +5,7 @@ from GrdDscnt import grdescentnormal
 from GrdDscntQuant import grdescentquant
 from NormalLog import normallogistic
 from QuantLog import quantlogistic
-from sklearn.model_selection import KFold
+from sklearn.model_selection import train_test_split
 
 
 def test_loss(w,X,y):
@@ -35,28 +35,30 @@ def experiment(X,y, bins: list):
     quant_loss = []
     w_quants = []
 
-    kf = KFold(n_splits=5)
-    for train_index, test_index in kf.split(y):
-        X_train = X[train_index].T
-        y_train = y[train_index].T
-        X_test = X[test_index].T
-        y_test = y[test_index].T
-        w0 = np.random.uniform(-1, 1, (X_train.shape[0], 1))
-        w,iters = grdescentnormal(normallogistic, w0, 0.1, 50000, X_train, y_train)
-        loss = test_loss(w, X_test, y_test)
-        print(loss)
+    # split randomly into test and training sets
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 
-        # store the results
-        normal_iters.append(iters)
-        normal_loss.append(loss)
+    # have to transpose data to get it to work with the function implementation where features are along the rows
+    X_train = X_train.T
+    X_test = X_test.T
+    y_test = y_test.T
+    y_train = y_train.T
+    w0 = np.random.uniform(-1, 1, (X_train.shape[0], 1))
+    w,iters = grdescentnormal(normallogistic, w0, 0.1, 50000, X_train, y_train)
+    loss = test_loss(w, X_test, y_test)
+    print(loss)
 
-        #do the same for quantized version
-        for num_bin in bins:
-            w_quant, iters = grdescentquant(quantlogistic, w0, 0.1, 50000, X_train, y_train, num_bin)
-            loss = test_loss(w_quant,X_test,y_test)
+    # store the results
+    normal_iters.append(iters)
+    normal_loss.append(loss)
 
-            quant_iters.append((num_bin, iters))
-            quant_loss.append((num_bin, loss))
+    #do the same for quantized version
+    for num_bin in bins:
+        w_quant, iters = grdescentquant(quantlogistic, w0, 0.1, 50000, X_train, y_train, num_bin)
+        loss = test_loss(w_quant,X_test,y_test)
+
+        quant_iters.append((num_bin, iters))
+        quant_loss.append((num_bin, loss))
     iters_dict = dict(quant_iters)
     loss_dict = dict(quant_loss)
     iters_dict = {key: np.mean(values) for key, values in iters_dict.items()}
