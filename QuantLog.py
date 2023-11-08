@@ -45,6 +45,6 @@ def quantlogistic(w,xTr,yTr,num_bins):
         else:
             beta[i] = grad_app(bins[a-1],bins[a])
         i += 1
-
+    print(beta)
     gradient = -np.mean(yTr * xTr * beta, axis = 1).reshape(-1, 1)
     return loss, gradient
