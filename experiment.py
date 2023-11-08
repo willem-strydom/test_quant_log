@@ -44,6 +44,7 @@ def experiment(X,y, bins: list):
         w0 = np.random.uniform(-1, 1, (X_train.shape[0], 1))
         w,iters = grdescentnormal(normallogistic, w0, 0.1, 50000, X_train, y_train)
         loss = test_loss(w, X_test, y_test)
+        print(loss)
 
         # store the results
         normal_iters.append(iters)
