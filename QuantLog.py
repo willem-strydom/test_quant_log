@@ -30,7 +30,7 @@ def quantlogistic(w,xTr,yTr,num_bins):
     values = -yTr*y_pred
     bins = binning(values, num_bins)
     # get the integer bin numbers from digitize
-    alpha = np.digitize(-yTr * y_pred, bins)[0]
+    alpha = np.digitize(-yTr * y_pred, bins).flatten()
     # map them to more appropriate values based on the real loss function
 
     beta = np.zeros_like(alpha)
