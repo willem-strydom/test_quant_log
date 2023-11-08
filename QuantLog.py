@@ -27,10 +27,10 @@ def quantlogistic(w,xTr,yTr,num_bins):
     loss = np.mean(np.log(1 + np.exp(-yTr * y_pred)))
 
     # implement a better approximation of the gradient
-    values = -yTr*y_pred
+    values = yTr*y_pred
     bins = binning(values, num_bins)
     # get the integer bin numbers from digitize
-    alpha = np.digitize(-yTr * y_pred, bins).flatten()
+    alpha = np.digitize(yTr * y_pred, bins).flatten()
     # map them to more appropriate values based on the real loss function
 
     beta = np.zeros_like(alpha)
