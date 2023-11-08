@@ -42,7 +42,9 @@ def grdescentnormal(func, w0, stepsize, maxiter, xTr, yTr, tolerance=1e-02):
             break
         if np.linalg.norm(gradient) < tolerance:
             break
-
+        if np.array_equal(gradient,prior_gradient):
+            print("gradient is unchanged")
+            break
         prior_loss = loss
         prior_gradient = gradient
         num_iter += 1
