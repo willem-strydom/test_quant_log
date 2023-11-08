@@ -27,25 +27,25 @@ def quantlogistic(w,xTr,yTr,num_bins):
     loss = np.mean(np.log(1 + np.exp(-yTr * y_pred)))
 
     # implement a better approximation of the gradient
-    values = -yTr*y_pred
+    values = yTr*y_pred
     bins = binning(values, num_bins)
     # get the integer bin numbers from digitize
-    print(bins)
-    alpha = np.digitize(-yTr * y_pred, bins).flatten()
+    alpha = np.digitize(values, bins).flatten()
     # map them to more appropriate values based on the real loss function
-
-    beta = np.zeros_like(alpha)
+    print(bins)
+    beta = np.zeros(alpha.shape)
     N = len(bins)
     i = 0
     for a in alpha:
+
         #edge cases: there is not a bin edge for the tails, so just set them to the limit
         if a == 0:
-            beta[i] = 0
-        elif a == N:
             beta[i] = 1
-        else:
-            beta[i] = grad_app(bins[a-1],bins[a])
+        elif a !=N:
+            x = grad_app(bins[a - 1], bins[a])
+
+            beta[i] = x
+
         i += 1
-    print(beta)
     gradient = -np.mean(yTr * xTr * beta, axis = 1).reshape(-1, 1)
     return loss, gradient
