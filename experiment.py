@@ -60,6 +60,7 @@ def experiment(X,y, bins: list):
     loss_dict = dict(quant_loss)
     iters_dict = {key: np.mean(values) for key, values in iters_dict.items()}
     loss_dict = {key: np.mean(values) for key, values in loss_dict.items()}
+    loss_dict[0] = np.mean(normal_loss)
 
     plt.bar(loss_dict.keys(), loss_dict.values())
     plt.xlabel("log bins")
@@ -70,5 +71,6 @@ def experiment(X,y, bins: list):
     plt.xlabel("log bins")
     plt.ylabel("mean iterations until convergence")
     plt.show()
+
 
     return normal_iters, quant_iters,  w_quant, w
