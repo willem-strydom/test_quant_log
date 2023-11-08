@@ -8,6 +8,8 @@ def binning(values, num_bins: int):
     :return: bins: a sort of partitioning scheme which will be used with np.digitized
     :note: will remove outliers defined as any point with a zscore >3
     """
+    print(values.shape)
+    print(values)
     values = values[0] #unpacking for some reason...
     scores = np.abs(zscore(values))
     # keep only data with -3 < zscore < 3 to create the binnings

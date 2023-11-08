@@ -32,7 +32,8 @@ def quantlogistic(w,xTr,yTr,num_bins):
     loss = np.mean(np.log(1 + np.exp(-yTr * y_pred)))
 
     # implement more binnings
-    bins = binning(-yTr*y_pred, num_bins)
+    values = -yTr*y_pred
+    bins = binning(values, num_bins)
     alpha = np.digitize(-yTr * y_pred, bins)
     alpha = alpha/(len(bins))
     gradient = -np.mean(yTr * xTr * alpha, axis = 1).reshape(-1, 1)
