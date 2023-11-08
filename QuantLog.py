@@ -37,6 +37,7 @@ def quantlogistic(w,xTr,yTr,num_bins):
     N = len(bins)
     i = 0
     for a in alpha:
+        #edge cases: there is not a bin edge for the tails, so just set them to the limit
         if a == 0:
             beta[i] = 0
         elif a == N:
