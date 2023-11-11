@@ -25,7 +25,7 @@ def quantlogistic(w,xTr,yTr,num_bins):
 
     # get approximation of the gradient
 
-    func = lambda x: 1/(1+np.exp(-x))
+    func = lambda x: 1/(1+np.exp(x))
     beta = quantize(vals, num_bins, func)
     gradient = -np.mean(yTr * xTr * beta, axis = 1).reshape(-1, 1)
     return loss, gradient
