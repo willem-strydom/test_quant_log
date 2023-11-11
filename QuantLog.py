@@ -1,6 +1,5 @@
 import numpy as np
-
-from binning import binning
+from quantize import quantize
 
 '''
 
@@ -16,36 +15,17 @@ from binning import binning
 
     [d,n]=size(xTr);
 '''
-def grad_app(val1,val2):
-    # get the mean value of the actual gradient between two points
-    approximation = (1+np.exp(val1))**-1 + (1+np.exp(val2))**-1
-    return approximation/2
+
 def quantlogistic(w,xTr,yTr,num_bins):
 
     y_pred = w.T @ xTr
+    vals = yTr * y_pred
     #keeping same loss function as for normal log loss?
-    loss = np.mean(np.log(1 + np.exp(-yTr * y_pred)))
+    loss = np.mean(np.log(1 + np.exp(-vals)))
 
-    # implement a better approximation of the gradient
-    values = yTr*y_pred
-    bins = binning(values, num_bins)
-    # get the integer bin numbers from digitize
-    alpha = np.digitize(values, bins).flatten()
-    # map them to more appropriate values based on the real loss function
+    # get approximation of the gradient
 
-    beta = np.zeros(alpha.shape)
-    N = len(bins)
-    i = 0
-    for a in alpha:
-
-        #edge cases: there is not a bin edge for the tails, so just set them to the limit
-        if a == 0:
-            beta[i] = 1
-        elif a !=N:
-            x = grad_app(bins[a - 1], bins[a])
-
-            beta[i] = x
-
-        i += 1
+    func = lambda x: 1/(1+np.exp(-x))
+    beta = quantize(vals, num_bins, func)
     gradient = -np.mean(yTr * xTr * beta, axis = 1).reshape(-1, 1)
     return loss, gradient
