@@ -15,6 +15,8 @@ from quantize import quantize
 
     [d,n]=size(xTr);
 '''
+import csv
+
 
 def quantlogistic(w,xTr,yTr,num_bins):
 
@@ -28,4 +30,11 @@ def quantlogistic(w,xTr,yTr,num_bins):
     func = lambda x: 1/(1+np.exp(x))
     beta = quantize(vals, num_bins, func)
     gradient = -np.mean(yTr * xTr * beta, axis = 1).reshape(-1, 1)
+
+    # store the values for later analysis of distribution...
+
+    """file_path = f'values{num_bins}.csv'
+    with open(file_path, "a") as f:
+        np.savetxt(f, vals, delimiter=',')"""
+
     return loss, gradient
