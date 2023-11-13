@@ -44,8 +44,7 @@ def grdescentquant(func, w0, stepsize, maxiter, xTr, yTr, gbins, wbins, toleranc
         if np.linalg.norm(gradient) < tolerance:
             break
 
-        w = quantize(w,wbins, f) # function is just f(x) = x in this case
-        print(w.shape)
+        w = quantize(w,wbins, f).reshape(-1,1) # function is just f(x) = x in this case
         prior_loss = loss
         prior_gradient = gradient
         num_iter += 1

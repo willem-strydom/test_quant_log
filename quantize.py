@@ -8,7 +8,6 @@ def quantize(vals,num_bins,func):
     :param func: function of one variable over vals which will be approximated
     :return: nx1 numpy array of quantized values
     """
-
     partitions = binning(vals,num_bins)
     # alpha is a list of which bin each val belongs to
     alpha = np.digitize(vals, partitions).flatten()
