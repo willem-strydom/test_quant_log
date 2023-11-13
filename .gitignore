@@ -1,3 +1,7 @@
 # Ignore sonar.csv and diabetes.csv
 sonar.csv
 diabetes.csv
+values1.csv
+values2.csv
+values3.csv
+values4.csv

@@ -18,14 +18,14 @@ def test_loss(w,X,y):
 
     return test_loss
 
-def experiment(X,y, bins: list):
+def experiment(X, y, gbins: list, wbins: list):
 
     """
     generates plots to compare performance of quantized gradient with normal gradient accross different number of bins
     :param X: features
     :param y: labels
     :param num_trials:
-    :param bins: array of number of bins to try
+    :param gbins: array of number of bins to try
     :return: normal_iters, quant_iters w_quant, w
     """
 
@@ -53,12 +53,13 @@ def experiment(X,y, bins: list):
     normal_loss.append(loss)
 
     #do the same for quantized version
-    for num_bin in bins:
-        w_quant, iters = grdescentquant(quantlogistic, w0, 0.1, 50000, X_train, y_train, num_bin)
-        loss = test_loss(w_quant,X_test,y_test)
+    for num_gbin in gbins:
+        for num_wbin in wbins:
+            w_quant, iters = grdescentquant(quantlogistic, w0, 0.1, 50000, X_train, y_train, num_gbin, num_wbin)
+            loss = test_loss(w_quant,X_test,y_test)
 
-        quant_iters.append((num_bin, iters))
-        quant_loss.append((num_bin, loss))
+            quant_iters.append(((num_gbin, num_wbin), iters))
+            quant_loss.append(((num_gbin, num_wbin), loss))
     iters_dict = dict(quant_iters)
     loss_dict = dict(quant_loss)
     iters_dict = {key: np.mean(values) for key, values in iters_dict.items()}

@@ -3,15 +3,16 @@ from binning import binning
 
 def quantize(vals,num_bins,func):
     """
-    :param vals: numpy 1xn array of func arguments that will be quantized
+    :param vals: numpy nx1 array of func arguments that will be quantized
     :param num_bins: int: log2 number of bins/quantization levels
     :param func: function of one variable over vals which will be approximated
-    :return: 1xn numpy array of quantized values
+    :return: nx1 numpy array of quantized values
     """
 
     partitions = binning(vals,num_bins)
+    # alpha is a list of which bin each val belongs to
     alpha = np.digitize(vals, partitions).flatten()
-    # map them to more appropriate values based on function
+    # map them to appropriate values based on the mean of func evaluation of the respective bin edges
 
     beta = np.zeros(alpha.shape)
     N = len(partitions)
