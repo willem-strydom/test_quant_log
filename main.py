@@ -29,4 +29,4 @@ sonar_y = sonar_data[:,-1]
 sonar_y = np.where(sonar_y == "M",1,-1)
 
 bins = [1,2,3,4]
-normal_iters, quant_iters,  w_quant, w = experiment(sonar_x,sonar_y, bins, bins)
+normal_iters, quant_iters,  w_quant, w = experiment(sonar_x,sonar_y, [3], range(2,20))
