@@ -33,8 +33,8 @@ def quantlogistic(w,xTr,yTr,num_bins):
 
     # store the values for later analysis of distribution...
 
-    """file_path = f'values{num_bins}.csv'
+    file_path = f'values{num_bins}.csv'
     with open(file_path, "a") as f:
-        np.savetxt(f, vals, delimiter=',')"""
+        np.savetxt(f, vals, delimiter=',')
 
     return loss, gradient
