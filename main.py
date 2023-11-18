@@ -35,4 +35,4 @@ X = np.vstack((bias, X)).astype(float)
 X = X.T
 y = y.T
 bins = [1,2,3,4]
-normal_iters, quant_iters,  w_quant, w = experiment(X,y, [3], [11,12,13])
+normal_iters, quant_iters,  w_quant, w = experiment(X,y, [4], [9,12,15,18,21])

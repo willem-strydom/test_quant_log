@@ -28,13 +28,15 @@ def quantlogistic(w,xTr,yTr,num_bins):
     # get approximation of the gradient
 
     func = lambda x: 1/(1+np.exp(x))
-    beta = quantize(vals, num_bins, func)
+    func = np.vectorize(func)
+    vals = func(vals)
+    beta = quantize(vals, num_bins)
     gradient = -np.mean(yTr * xTr * beta, axis = 1).reshape(-1, 1)
 
     # store the values for later analysis of distribution...
 
-    file_path = f'values{num_bins}.csv'
+    """file_path = f'values{num_bins}.csv'
     with open(file_path, "a") as f:
         np.savetxt(f, vals, delimiter=',')
-
+"""
     return loss, gradient

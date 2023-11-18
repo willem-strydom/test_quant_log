@@ -14,7 +14,7 @@ def binning(exps, num_bins: int):
     exps = exps.flatten() #unpacking for some reason
     scores = np.abs(zscore(exps))
     # keep only data with -3 < zscore < 3 to create the binnings
-    exps = exps[(scores < 3)]
+    exps = exps[(scores < 2)]
     min = np.min(exps)
     max = np.max(exps)
     # ignore the first bit

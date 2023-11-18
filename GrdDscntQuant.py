@@ -24,7 +24,6 @@ def grdescentquant(func, w0, stepsize, maxiter, xTr, yTr, gbins, wbins, toleranc
     # and decrease it by a factor 0.5 if the loss went up. ...
     # also undo the last update in that case to make sure
     # the loss decreases every iteration
-    f = lambda x: x
     while num_iter < maxiter:
         loss, gradient = func(w, xTr, yTr, gbins)
         if loss > prior_loss:
@@ -44,7 +43,7 @@ def grdescentquant(func, w0, stepsize, maxiter, xTr, yTr, gbins, wbins, toleranc
         if np.linalg.norm(gradient) < tolerance:
             break
 
-        w = quantize(w,wbins, f).reshape(-1,1) # function is just f(x) = x in this case
+        w = quantize(w,wbins).reshape(-1,1) # function is just f(x) = x now
         prior_loss = loss
         prior_gradient = gradient
         num_iter += 1
