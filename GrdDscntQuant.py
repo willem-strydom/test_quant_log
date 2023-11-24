@@ -1,6 +1,6 @@
 import numpy as np
 
-def grdescentquant(func, w0, stepsize, maxiter, xTr, yTr, bins, tolerance=1e-02):
+def grdescentquant(func, w0, stepsize, maxiter, xTr, yTr, bins, type, tolerance=1e-02):
     # INPUT:
     # func function to minimize
     # w_trained = initial weight vector

@@ -8,6 +8,7 @@ from QuantLog import quantlogistic
 from sklearn.model_selection import train_test_split
 
 
+
 def test_loss(w,X,y):
     #calculates test loss
     log_odds = np.dot(w.T, X)
@@ -18,16 +19,27 @@ def test_loss(w,X,y):
 
     return test_loss
 
-def experiment(X,y, bins: list):
+def experiment(X,y):
+    # remember to transpose data to have shape dxn
+    quantizers = ['unif', 'gauss']
+    levels = [1,2,3,4]
 
-    """
+
+
+
+
+
+"""def experiment(X,y, bins: list):
+
+
     generates plots to compare performance of quantized gradient with normal gradient accross different number of bins
     :param X: features
     :param y: labels
     :param num_trials:
     :param bins: array of number of bins to try
     :return: normal_iters, quant_iters w_quant, w
-    """
+
+
 
     normal_iters = []
     quant_iters = []
@@ -76,4 +88,4 @@ def experiment(X,y, bins: list):
     plt.show()
 
 
-    return normal_iters, quant_iters,  w_quant, w
+    return normal_iters, quant_iters,  w_quant, w"""
