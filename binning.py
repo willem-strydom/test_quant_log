@@ -2,30 +2,29 @@ import numpy as np
 from scipy.stats import zscore
 
 
-def binning(exps, num_bins: int):
+def binning(type:str, bins: int, var: float, mean: float):
 
     """
-    :param values: numpy array of values to be binned
-    :param num_bins: log_2 of the number of bins i.e. bins = 2 -> 4 bins
-    :return: bins: a sort of partitioning scheme which will be used with np.digitized
-    :note: will remove outliers defined as any point with a zscore >3
+
+    :param type: "unif" or "gauss" -> assumed distribution
+    :param bins: log2 number of bins... must be 1,2,3,or 4 for now
+    :param var: variance of values
+    :param mean: mean of values
+    :return: (2^num_bins)+1 partitions.. need to chop the ends off though numpy 1xd array
     """
-
-    exps = exps.flatten() #unpacking for some reason
-    scores = np.abs(zscore(exps))
-    # keep only data with -3 < zscore < 3 to create the binnings
-    exps = exps[(scores < 3)]
-    min = np.min(exps)
-    max = np.max(exps)
-    # ignore the first bit
-    # this is in order to get a correct partitioning scheme
-    bins = np.arange(min, max, (max - min)/2**num_bins)[1:]
-
-    """values = [grad_app(bins[i-1],bins[i]) for i in range(1,len(bins))]
-    # just say that anything that falls outside of the bins is 0 or 1 depending on which side
-    values.insert(0,0)
-    values.append(1)"""
-
-    return bins
+    # if statements...nice
+    if type == 'unif':
+        a = mean - np.sqrt(3*var)
+        b = mean + np.sqrt(3*var)
+        return np.linspace(a, b, num=2**bins +1)
+    elif type == 'gauss':
+        if bins == 1:
+            return np.array[-1.596,0,1.596] * var + mean
+        if bins == 2:
+            return np.linspace(-1.991,1.991,0.996) * var + mean
+        if bins == 3:
+            return np.linspace(-2.344,2.344,0.586) * var + mean
+        if bins == 4:
+            return np.linspace(-2.68,2.68,0.335) * var + mean
 
 
