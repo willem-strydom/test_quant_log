@@ -23,6 +23,18 @@ def experiment(X,y):
     # remember to transpose data to have shape dxn
     quantizers = ['unif', 'gauss']
     levels = [1,2,3,4]
+    func = quantlogistic
+    w0 = np.random.uniform(-1, 1, (X.shape[0], 1))
+    for quantizer_w in quantizers:
+        for quantizer_q in quantizers:
+            loss_grid = np.zeros((4,4))
+            for i, level_w in enumerate(levels):
+                for j, level_q in enumerate(levels):
+                    w, iters = grdescentquant(func, w0, 0.1, 10000, X, y, level_w, level_q, type, tolerance=1e-02)
+                    loss = test_loss(w,X,y)
+                    loss_grid[i,j] = loss
+            xlabel = "gradient lvl"
+            ylabel = "w lvl"
 
 
 

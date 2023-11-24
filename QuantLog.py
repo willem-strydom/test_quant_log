@@ -18,23 +18,28 @@ from quantize import quantize
 import csv
 
 
-def quantlogistic(w,xTr,yTr,num_bins):
+def quantlogistic(w,xTr,yTr,num_bins, type):
 
     y_pred = w.T @ xTr
     vals = yTr * y_pred
     #keeping same loss function as for normal log loss?
     loss = np.mean(np.log(1 + np.exp(-vals)))
 
-    # get approximation of the gradient
+    # take sigmoid of vals
 
     func = lambda x: 1/(1+np.exp(x))
-    beta = quantize(vals, num_bins, func)
+    func = np.vectorize(func)
+    vals = func(vals)
+
+    # then quantize
+
+    beta = quantize(vals, num_bins, type)
     gradient = -np.mean(yTr * xTr * beta, axis = 1).reshape(-1, 1)
 
     # store the values for later analysis of distribution...
 
     """file_path = f'values{num_bins}.csv'
     with open(file_path, "a") as f:
-        np.savetxt(f, vals, delimiter=',')"""
-
+        np.savetxt(f, vals, delimiter=',')
+"""
     return loss, gradient
