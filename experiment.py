@@ -35,6 +35,12 @@ def experiment(X,y):
                     loss_grid[i,j] = loss
             xlabel = "gradient lvl"
             ylabel = "w lvl"
+            plt.pcolormesh(loss_grid)
+            plt.colorbar()
+            plt.xlabel(xlabel)
+            plt.ylabel(ylabel)
+            plt.title(f"w quantizer: {quantizer_w}, gradient quantizer: {quantizer_q}")
+            plt.show
 
 
 
