@@ -11,9 +11,11 @@ def quantize(vals, level_q, type_q):
     partitions = binning(vals, level_q, type_q)
     # alpha is a list of which bin each val belongs to
 
-    #processing partitions... maybe not a great way to do this
+    # processing partitions... maybe not a great way to do this
     step = partitions[1] - partitions[0]
+    # remove edge partitions since it should j be +- \infty
     partitions = partitions[1:-1]
+    # index for which bin each respective value falls into
     alpha = np.digitize(vals, partitions).flatten()
     # map them to appropriate values based on the mean of func evaluation of the respective bin edges
 
@@ -25,7 +27,7 @@ def quantize(vals, level_q, type_q):
         # edge cases: there is not a partition edge for the tails,
         # but digitize will not work correctly if we add the tail bins before
         # calling it,
-        # so just calculate what the bin edge would be for the values which fall in the tail
+        # so just calculate what the bin edge would be for the values which fall in the tails
         if a == 0:
             beta[i] = (partitions[0] + partitions[0] - step)/2
         elif a == N:

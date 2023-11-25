@@ -23,10 +23,10 @@ def binning(vals, bins: int, type:str):
         if bins == 1:
             return np.array([-1.596,0,1.596]) * var + mean
         if bins == 2:
-            return np.linspace(-1.991,1.991,0.996) * var + mean
+            return np.arange(-1.991,1.992,0.996) * var + mean
         if bins == 3:
-            return np.linspace(-2.344,2.344,0.586) * var + mean
+            return np.arange(-2.344,2.345,0.586) * var + mean
         if bins == 4:
-            return np.linspace(-2.68,2.68,0.335) * var + mean
+            return np.arange(-2.68,2.69,0.335) * var + mean
 
 
