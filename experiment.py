@@ -6,6 +6,7 @@ from GrdDscntQuant import grdescentquant
 from NormalLog import normallogistic
 from QuantLog import quantlogistic
 from sklearn.model_selection import train_test_split
+import time
 
 
 
@@ -30,7 +31,10 @@ def experiment(X,y):
             loss_grid = np.zeros((4,4))
             for i, level_w in enumerate(levels):
                 for j, level_q in enumerate(levels):
+                    start = time.time()
                     w, iters = grdescentquant(func, w0, 0.1, 10000, X, y, level_w, level_q, type_w, type_q, tolerance=1e-02)
+                    end = time.time()
+                    print(f'time: {end-start},iterations: {iters}')
                     loss = test_loss(w,X,y)
                     loss_grid[i,j] = loss
             xlabel = "gradient lvl"
