@@ -16,6 +16,6 @@ def gen_data():
 
     d = X.shape[0]
 
-    y = np.sign(np.random.uniform(-0.5, 0.5) + np.matmul(np.random.uniform(-0.5, 0.5, d), X))
+    y = np.sign(np.random.uniform(-0.1, 0.1) + np.matmul(np.random.uniform(-0.5, 0.5, d), X))
 
     return X,y
