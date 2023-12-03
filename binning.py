@@ -2,7 +2,7 @@ import numpy as np
 from scipy.stats import zscore
 
 
-def binning(vals, bins: int, type:str):
+def binning(vals, bins: int, type:str, scale):
 
     """
 
@@ -14,6 +14,8 @@ def binning(vals, bins: int, type:str):
     """
     var = np.var(vals)
     mean = np.mean(vals)
+    if scale == "sqrd":
+        scale = mean
     # if statements...nice
     if type == 'unif':
         a = mean - np.sqrt(3*var)
@@ -21,12 +23,12 @@ def binning(vals, bins: int, type:str):
         return np.linspace(a, b, num=2**bins +1)
     elif type == 'gauss':
         if bins == 1:
-            return np.arange(-1.596,1.597,1.596) * var + mean
+            return np.arange(-1.596,1.597,1.596) * var + mean * scale
         elif bins == 2:
-            return np.arange(-1.991,1.992,0.996) * var + mean
+            return np.arange(-1.991,1.992,0.996) * var + mean * scale
         elif bins == 3:
-            return np.arange(-2.344,2.345,0.586) * var + mean
+            return np.arange(-2.344,2.345,0.586) * var + mean * scale
         elif bins == 4:
-            return np.arange(-2.68,2.69,0.335) * var + mean
+            return np.arange(-2.68,2.69,0.335) * var + mean * scale
 
 

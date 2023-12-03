@@ -18,7 +18,7 @@ from quantize import quantize
 import csv
 
 
-def quantlogistic(w,xTr,yTr,num_bins, type):
+def quantlogistic(w,xTr,yTr,num_bins, type, scale):
 
     y_pred = w.T @ xTr
     vals = yTr * y_pred
@@ -33,7 +33,7 @@ def quantlogistic(w,xTr,yTr,num_bins, type):
 
     # then quantize
 
-    beta = quantize(vals, num_bins, type)
+    beta = quantize(vals, num_bins, type, scale)
     gradient = -np.mean(yTr * xTr * beta, axis = 1).reshape(-1, 1)
 
     # store the values for later analysis of distribution...
