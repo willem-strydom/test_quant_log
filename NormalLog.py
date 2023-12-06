@@ -15,7 +15,7 @@ import numpy as np
 
     [d,n]=size(xTr);
 '''
-def normallogistic(w,xTr,yTr, scale):
+def normallogistic(w,xTr,yTr):
 
     y_pred = w.T@xTr
     loss = np.mean(np.log(1 + np.exp(-yTr * y_pred)))
