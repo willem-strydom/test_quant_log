@@ -23,12 +23,12 @@ def binning(vals, bins: int, type:str, scale):
         return np.linspace(a, b, num=2**bins +1)
     elif type == 'gauss':
         if bins == 1:
-            return np.arange(-1.596,1.597,1.596) * var + mean * scale
+            return np.arange(-1.596,1.597,1.596) * var * scale + mean
         elif bins == 2:
-            return np.arange(-1.991,1.992,0.996) * var + mean * scale
+            return np.arange(-1.991,1.992,0.996) * var * scale + mean
         elif bins == 3:
-            return np.arange(-2.344,2.345,0.586) * var + mean * scale
+            return np.arange(-2.344,2.345,0.586) * var * scale + mean
         elif bins == 4:
-            return np.arange(-2.68,2.69,0.335) * var + mean * scale
+            return np.arange(-2.68,2.69,0.335) * var * scale + mean
 
 

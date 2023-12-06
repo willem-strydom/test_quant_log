@@ -46,7 +46,7 @@ def experiment(X,y):
                         start = time.time()
                         w, iters = grdescentquant(func, w0, 0.1, 10000, X, y, level_w, level_q, type_w, type_q, scale, tolerance=1e-02)
                         end = time.time()
-                        print(f'time: {end-start},iterations: {iters}')
+                        #print(f'time: {end-start},iterations: {iters}')
                         loss = test_loss(w,X,y)
                         loss_grid[i,j] = loss
                 xlabel = "gradient lvl"
