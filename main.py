@@ -27,3 +27,11 @@ X = diabetes_x.T
 y = diabetes_y.T
 print("diabetes data")
 experiment(X,y)
+from gen_data import gen_data
+X,y = gen_data()
+X = scaler.fit_transform(X)
+
+bias = np.ones((X.shape[1],1)).T
+X = np.vstack((bias, X)).astype(float)
+print("synthetic data")
+experiment(X,y)

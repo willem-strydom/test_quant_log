@@ -22,42 +22,40 @@ def test_loss(w,X,y):
 
 def experiment(X,y):
     # remember to transpose data to have shape dxn
-    quantizers = ['unif', 'gauss']
-    levels = [1,2,3,4]
-    ulevels = [1,2,3,4,5,6,7,8]
-    func = quantlogistic
-    w0 = np.random.uniform(-1, 1, (X.shape[0], 1))
-    scales = [np.sqrt(2),1/2,"sqrd"]
-    for scale in scales:
-        for type_w in quantizers:
-            for type_q in quantizers:
-                if type_w == 'unif':
-                    levels_w = ulevels
-                if type_w == 'gauss':
-                    levels_w = levels
-                if type_q == 'unif':
-                    levels_q = ulevels
-                if type_q == 'gauss':
-                    levels_q = levels
 
-                loss_grid = np.zeros((len(levels_w),len(levels_q)))
-                for i, level_w in enumerate(levels_w):
-                    for j, level_q in enumerate(levels_q):
-                        start = time.time()
-                        w, iters = grdescentquant(func, w0, 0.1, 10000, X, y, level_w, level_q, type_w, type_q, scale, tolerance=1e-02)
-                        end = time.time()
-                        #print(f'time: {end-start},iterations: {iters}')
-                        loss = test_loss(w,X,y)
-                        loss_grid[i,j] = loss
-                xlabel = "gradient lvl"
-                ylabel = "w lvl"
-                plt.pcolormesh(loss_grid)
-                plt.colorbar()
-                plt.xlabel(xlabel)
-                plt.ylabel(ylabel)
-                plt.title(f"w quantizer: {type_w}, gradient quantizer: {type_q}, scale: {scale}")
-                plt.show()
-                print(loss_grid)
+    func = quantlogistic
+
+    scales = [np.sqrt(2),1/2,"sqrd"]
+    levels_w = [5,6,7,8]
+    levels_q = [1,2,3,4]
+
+    loss_grid = np.zeros((len(levels_w),len(levels_q)))
+    for _ in range(10):
+        w0 = np.random.uniform(-1, 1, (X.shape[0], 1))
+        for i, level_w in enumerate(levels_w):
+            for j, level_q in enumerate(levels_q):
+                start = time.time()
+                w, iters = grdescentquant(func, w0, 0.1, 10000, X, y, level_w, level_q, 'unif', 'unif', 1, tolerance=1e-02)
+                end = time.time()
+                #print(f'time: {end-start},iterations: {iters}')
+                loss = test_loss(w,X,y)
+                loss_grid[i,j] += loss
+    loss_grid = loss_grid/10
+    xlabel = "gradient lvl"
+    ylabel = "w lvl"
+    plt.pcolormesh(loss_grid)
+    plt.colorbar()
+    plt.xlabel(xlabel)
+    plt.yticks([1,2,3,4], labels = [f"{w}" for w in levels_w])
+    plt.ylabel(ylabel)
+    plt.title(f"unif unif quant for 10 runs diff w0 same data")
+    plt.show()
+    print(loss_grid)
+    w0 = np.random.uniform(-1, 1, (X.shape[0], 1))
+    w, iters = grdescentnormal(normallogistic, w0, 0.1, 10000, X, y, tolerance=1e-02)
+    loss = test_loss(w, X, y)
+    print(loss, iters)
+
 
 
 

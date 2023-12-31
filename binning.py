@@ -40,4 +40,3 @@ def _binning():
             for scale in scales:
                 print(binning(vals,bin,type,scale), f"{bin}, {type}, {scale}")
 
-_binning()
